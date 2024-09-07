@@ -50,10 +50,6 @@ async def cmd_meme(message: Message):
         show_caption_above_media=True
     )
 
-@dp.message(Command("info"))
-async def cmd_info(message: Message, botName: str):
-    await message.answer(f"Бот запущен с именем: {botName}")
-
 # Хэндлер на команду /start
 @dp.message(Command("start"))
 async def cmd_start(message: Message):
@@ -63,17 +59,25 @@ async def cmd_start(message: Message):
         as_marked_section(
             Bold("В боте доступны команды:"),
             " /meme",
-            "/info",
             marker='    '
         ),
         sep="\n\n"
     )
     await message.answer(**content.as_kwargs())
 
+@dp.message()
+async def cmd_keltuzad(message: Message):
+    sub = 'ученые'
+    text = message.text.lower()
+    if sub in text:
+        first_letter_index = text.index(sub)
+        quote = f'{message.text[first_letter_index]}ченые'
+        await message.answer('В говне моченые', reply_parameters={'message_id': message.message_id ,'quote': quote})
+
 # Запуск процесса поллинга новых апдейтов
 async def main():
     get_memes()
-    await dp.start_polling(bot, botName='Beauty bot')
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
     asyncio.run(main())
