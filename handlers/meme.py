@@ -3,9 +3,12 @@ from aiogram.filters import Command
 from aiogram.types import URLInputFile, Message
 import random
 
-router = Router()
+from middleware.chat_action import ChatActionMiddleware
 
-@router.message(Command("meme"))
+router = Router()
+router.message.middleware(ChatActionMiddleware())
+
+@router.message(Command("meme"), flags={'long_operation': 'upload_photo'})
 async def cmd_meme(message: Message, memes: list, memes_ids: dict):
     meme = random.choice(memes)
     meme_name = meme['name']
