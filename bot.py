@@ -1,12 +1,11 @@
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher
-from config_reader import config
+from utils.config_reader import config
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
-from aiogram.types import FSInputFile
 
-from handlers import group_answers, meme, start
+from handlers import books, group_answers, meme, start
 from utils.memes import get_memes
 
 # Включаем логирование, чтобы не пропустить важные сообщения
@@ -19,7 +18,8 @@ async def main():
             parse_mode=ParseMode.HTML
         ))
     dp = Dispatcher()
-    dp.include_routers(start.router, meme.router, group_answers.router)
+    dp.include_routers(start.router, meme.router, books.router)
+    # dp.include_routers(start.router, meme.router, group_answers.router, books.router)
 
     memes = await get_memes()
     memes_ids = {}
