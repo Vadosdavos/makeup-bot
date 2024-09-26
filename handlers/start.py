@@ -1,20 +1,21 @@
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.filters import Command
-from aiogram.types import Message
-from aiogram.utils.formatting import Text, Bold, as_list, as_marked_section
+from aiogram.types import Message, ReplyKeyboardRemove
+from utils.text import greet, menu, cancel
+from keyboards import kb
+from aiogram.fsm.context import FSMContext
 
 router = Router()
 
 @router.message(Command("start"))
-async def cmd_start(message: Message):
-    content = as_list(
-        Text("Привет, ",
-        Bold(message.from_user.full_name), "!"),
-        as_marked_section(
-            Bold("В боте доступны команды:"),
-            " /meme",
-            marker='    '
-        ),
-        sep="\n\n"
-    )
-    await message.answer(**content.as_kwargs())
+async def cmd_start(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(greet.format(name=message.from_user.full_name), reply_markup=kb.menu)
+
+@router.message(Command(commands=["cancel"]))
+@router.message(F.text == "Меню")
+@router.message(F.text == "◀️ Выйти в меню")
+async def back_to_menu(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(cancel, reply_markup=ReplyKeyboardRemove())
+    await message.answer(menu, reply_markup=kb.menu)

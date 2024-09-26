@@ -4,6 +4,7 @@ from aiogram import Bot, Dispatcher
 from utils.config_reader import config
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
+from aiogram.utils.chat_action import ChatActionMiddleware
 
 from handlers import books, group_answers, meme, start
 from utils.memes import get_memes
@@ -18,6 +19,7 @@ async def main():
             parse_mode=ParseMode.HTML
         ))
     dp = Dispatcher()
+    dp.message.middleware(ChatActionMiddleware())
     dp.include_routers(start.router, meme.router, books.router)
     # dp.include_routers(start.router, meme.router, group_answers.router, books.router)
 

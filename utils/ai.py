@@ -8,7 +8,7 @@ model = "pixtral-12b-2409"
 
 client = Mistral(api_key=api_key)
 
-async def generate_recommendation(prompt) -> str:
+async def generate_recommendation(prompt) -> list:
     try:
         response = client.chat.complete(
             model= model,
