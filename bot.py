@@ -7,10 +7,9 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.utils.chat_action import ChatActionMiddleware
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from handlers import books, group_answers, meme, start, genre
+from handlers import books, keltuzad, meme, start, genre
 from utils.memes import get_memes
 
-# Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
 
 async def main():
@@ -21,8 +20,7 @@ async def main():
         ))
     dp = Dispatcher(storage=MemoryStorage())
     dp.message.middleware(ChatActionMiddleware())
-    dp.include_routers(start.router, meme.router, books.router, genre.router)
-    # dp.include_routers(start.router, meme.router, group_answers.router, books.router)
+    dp.include_routers(start.router, meme.router, books.router, genre.router, keltuzad.router)
 
     memes = await get_memes()
     memes_ids = {}

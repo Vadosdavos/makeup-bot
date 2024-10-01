@@ -1,4 +1,4 @@
-from aiogram import Router
+from aiogram import Router, flags
 from aiogram.filters import Command
 from aiogram.types import URLInputFile, Message
 import random
@@ -6,6 +6,7 @@ import random
 router = Router()
 
 @router.message(Command("meme"))
+@flags.chat_action("upload_photo")
 async def cmd_meme(message: Message, memes: list, memes_ids: dict):
     meme = random.choice(memes)
     meme_name = meme['name']

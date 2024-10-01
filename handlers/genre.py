@@ -7,7 +7,7 @@ from store.store import PromptStore
 from utils.ai import generate_recommendation_by_genre
 from aiogram.utils.formatting import Text, Bold, as_list, as_marked_list
 from aiogram.types.callback_query import CallbackQuery 
-from utils.text import set_genre, set_book_author, gen_wait, gen_error
+from utils.text import set_genre, gen_wait, gen_error
 from keyboards import kb
 
 router = Router()
@@ -21,7 +21,6 @@ async def start_input_prompt(clbck: CallbackQuery, state: FSMContext):
 @flags.chat_action("typing")
 async def get_genre_recommendations(message: Message, state: FSMContext):
     genre = message.text.lower()
-    # await state.update_data(genre=genre)
     await state.clear()
     await message.answer(gen_wait, reply_markup=ReplyKeyboardRemove())
     res = await generate_recommendation_by_genre(genre)
